@@ -1,0 +1,23 @@
+1) Qué son los Entity Embeddings y cómo se relacionan con las variables categóricas?
+
+Embedding: https://www.youtube.com/watch?v=RkYuH_K7Fx4
+Entity embedding: https://towardsdatascience.com/entity-embeddings-for-ml-2387eb68e49#:~:text=Entity%20embeddings%20can%20represent%20categorical,neural%20nets%20if%20requiring%20interpretability.
+
+
+El problema surge de que se busca procesar texto pero la red neuronal solo trabaja con numeros.
+One hot encoding se refiere a una forma de representar palabras usando un vector que tenga tantas componentes como palabras haya en el vocabulario, donde todas las componentes estaran en cero salvo la palabra que querramos representar. Esto trae el beneficio de que cada palabra ocupa su propia dimension, y al final cada palabra mantiene la misma distancia con el resto de las palabras. Sin embargo, nosotros entendemos que hay palabras que son mas "parecidas" a otras (por ejemplo, palabras dentro de un mismo contexto (planeta, galaxia, espacio)). Este proceso reduce la dimensionalidad del problema. En resumen, el proceso para pasar de one hot encoding a una representacion mas compacta es lo que se conoce como embedding.
+
+En particular, los entity embeddings tienen mejor performance que el one- hot encoding puesto que representan a variables categoricas en una manera mas compacta y continua. Usando one- hot encoding se ignora la relacion informativa entre las palabras (features), sin embargo entity embeddings puede mapear palabras relacionadas mas cerca en el espacio, lo que hace que la representacion sea mas "continua".
+Luego, se concluye que usar entity embeddings no solo reduce el uso de la memoria sino que tambien hace que la red funcione mas rapido (en comparacion a one- hot encoding) y como mapea valores similares cerca, se revelan las propiedades intrinsecas de las variables categoricas. Ademas, se puede demostrar que usar entity embeddings ayuda a la red neuronal a generalizar mejor cuando los datos son esparsos y los estadisticos son desconocidos, lo que es particularmente util para para datasets con alta cardinalidad en sus features, dado que otros metodos tienden a overfitear.
+
+Aclaracion de conceptos:
+Cardinalidad de un feature: se refiere al numero de posibles valores que un feature puede tener. Por ejemplo, "US State" puede tener 50 valores posibles. Esto es un problema si se usa one- hot encoding puesto que se tienen columnas separadas para cada valor unico (donde se indica si pertenence o no pertenece) en la variable categorica.
+
+Resumen:
+Se tiene una variable que era categórica y se la mapea a un espacio continuo. Explico un con ejemplo. Quiere decir que se tiene una variable que es por ejemplo "Animal", o sea que las opciones son ["Gato", "Perro", "Oso"]. La opción más común es traducirlo a números como [0, 1, 2], por ejemplo. Otra alternativa un poco mejor es one-hot encoding, o sea, traducirlo como [1, 0, 0], [0, 1, 0] y [0, 0, 1], lo cual ya da más dimensionalidad al problema y permite mejor extraer los features. Los embeddings son una especie de one-hot, pero no se pone en términos absolutos [1, 0, 0], sino que cada uno de esos tres números es una variable continua. Esto permite aprovechar esa dimensionalidad extra que se le dio al problema, para aprender distintas relaciones entre las variables que no sean blanco o negro, sino más grises. Y mientras más grande hagas ese vector, más dimensiones puede aprender (hasta que se empieza a overfittear).
+
+
+2) Explique la métrica utilizada en la competencia.
+
+La metrica usada en la competencia es RMSPE, es decir, Root mean square percentage error. Se parte del MSE, pero se agrega el yi (valor anotado) en el denominador puesto que se busca evaluar el error porcentual y no absoluto. Se busca cuando se trabaja con medidas dispares entre si. La raiz se hace para que el error quede medido en la variable de interes ("ventas", en este caso).
+
